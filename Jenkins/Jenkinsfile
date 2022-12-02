@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     parameters {
         choice choices: ['master', 'agent'], description: 'Select agent', name: 'agent'
     }
@@ -16,8 +16,7 @@ pipeline{
                 }
             }
         }
-    }
-    stage('Test') {
+        stage('Test') {
          steps {
             dir('Jenkins/simple_app_project/calculator') {
                 sh "mvn test"
