@@ -20,6 +20,7 @@ pipeline {
          steps {
             dir('Jenkins/simple_app_project/calculator') {
                 sh "mvn test"
+                }
             }
         }
     }
