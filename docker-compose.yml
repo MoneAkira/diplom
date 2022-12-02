@@ -1,0 +1,93 @@
+version: '3.3'
+services:
+  jenkins_master:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    privileged: true
+    restart: unless-stopped
+    ports: 
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - jenkins_volume://F/Jenkins/volumes
+    networks:
+      - jenkins_network
+      
+  jenkins_slave:
+    image: jenkins/inbound-agent
+    container_name: slave
+    restart: unless-stopped
+    environment:
+      JENKINS_URL: http://jenkins:8080/
+      JENKINS_SECRET: 51f3f3c11d243d96dd4ad7462e62044d1c9b7635ddf91bac0392e92fe7af6a27
+      JENKINS_AGENT_NAME: slave
+      JENKINS_AGENT_WORKDIR: /home/jenkins/agent
+    networks:
+      - jenkins_network
+      
+  # jenkins_docker:
+  #   image: docker:dind
+  #   container_name: docker
+  #   privileged: true
+  #   environment:
+  #     DOCKER_TLS_CERTDIR: ""
+  #   restart: unless-stopped
+  #   volumes:
+  #     - docker_volume:/var/lib/docker
+  #   networks:
+  #     - jenkins_network
+
+  # git:
+  #   image: gitea/gitea:1.16.9
+  #   container_name: gitea
+  #   restart: unless-stopped
+  #   ports:
+  #     - "4000:3000"
+  #     - "222:22"
+  #   environment:
+  #     - USER_UID=1000
+  #     - USER_GID=1000
+  #   volumes:
+  #     - gitea_volume:/data
+  #   networks:
+  #     - jenkins_network
+ 
+  prometheus:
+    image: prom/prometheus
+    ports:
+    - '9090:9090'
+    volumes:
+    - prometheus_data:/monitoring/prometheus
+    command:
+    - '--config.file=/etc/prometheus/prometheus.yml'
+    - '--storage.tsdb.path=/prometheus'
+    - '--storage.tsdb.retention=1d'
+    networks:
+      - jenkins_network
+  
+  grafana:
+    image: grafana/grafana:5.0.0
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    networks:
+      - jenkins_network
+
+volumes:
+  jenkins_volume:
+    external: true
+  docker_volume:
+    external: true
+  gitea_volume:
+    external: true
+  prometheus_data:
+  grafana_data:
+
+networks:
+  jenkins_network:

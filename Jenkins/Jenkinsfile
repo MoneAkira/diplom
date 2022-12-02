@@ -1,0 +1,20 @@
+pipeline{
+    parameters {
+        choice choices: ['master', 'agent'], description: 'Select agent', name: 'agent'
+    }
+    agent {
+        label "${agent}"
+    }
+    tools {
+        maven '3.8.6'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                dir('Jenkins/simple_app_project/calculator') {
+                    sh "mvn -B -DskipTests clean package"
+                }
+            }
+        }
+    }
+}
