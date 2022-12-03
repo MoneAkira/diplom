@@ -3,7 +3,7 @@ pipeline {
         choice choices: ['agent', 'master'], description: 'Select agent', name: 'agent'
     }
     agent {
-        label any
+        label "${agent}"
     }
     tools {
         maven '3.8.6'
