@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t prom/prometheus .
+docker build -t mon/prometheus .
