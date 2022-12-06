@@ -51,6 +51,15 @@ services:
       - 3000:3000
     networks:
       - jenkins_network
+ 
+  alertmanager:
+    image: mon/alertmanager
+    command:
+    - '--config.file=/etc/alertmanager/config.yml'
+    ports:
+    - 9093:9093
+    networks:
+      - jenkins_network
 
 volumes:
   jenkins_volume:
