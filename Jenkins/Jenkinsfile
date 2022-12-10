@@ -24,9 +24,9 @@ pipeline {
             }
         }
     }     
-    post {
-    always {            
-        telegramSend '${currentBuild.projectName} ${currentBuild.displayName} ${currentBuild.result}'   
-        }
-    }
+    // post {
+    // always {            
+    //     telegramSend '${currentBuild.projectName} ${currentBuild.displayName} ${currentBuild.result}'   
+    //     }
+    // }
 }

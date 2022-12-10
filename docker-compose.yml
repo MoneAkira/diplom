@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     environment:
       JENKINS_URL: http://jenkins:8080/
-      JENKINS_SECRET: 1293e3b2098cc96904866f54ee9759898a710caa4a725d5f888d6e65956fd2eb
+      JENKINS_SECRET: a9a7cd910436280ca15c72940c195dafea05a0584012c544c930d27a840e9b62
       JENKINS_AGENT_NAME: slave
       JENKINS_AGENT_WORKDIR: /home/jenkins/agent
     networks:
