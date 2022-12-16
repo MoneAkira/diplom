@@ -1,4 +1,4 @@
-#! /usr/bin/bash
+#! /bin/bash
 start(){
 echo "Select your OS.
 1) Windows
