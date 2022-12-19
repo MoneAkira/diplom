@@ -24,7 +24,21 @@ services:
       JENKINS_AGENT_WORKDIR: /home/jenkins/agent
     networks:
       - jenkins_network
- 
+  
+  jenkins_docker:
+    image: docker:dind
+    container_name: docker
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    restart: unless-stopped
+    # volumes:
+      # - /var/lib/docker:/var/lib/docker
+    volumes:
+      - docker_volume:/var/lib/docker
+    networks:
+      - jenkins_network
+
   prometheus:
     image: mon/prometheus
     ports:
