@@ -20,7 +20,24 @@ pipeline {
                 }
             }
         }
+        stage {
+        stage('Deploy') {
+            steps {
+                script {
+                   json = readFile "Jenkins/simple_app_project/devops/services.json"
+                    app = new JsonSlurperClassic().parseText(json)
+                    dockerRegistry = "monea"
+                    dockerOwner = "mon"
+                    dockerImageTag= "${dockerRegistry}/${dockerOwner}/${app}"
+                    app.keySet().each { app ->
+                        sh """docker pull ${dockerRegistry}/${dockerOwner}/${app}
+                        docker run -d ${dockerRegistry}/${dockerOwner}/${app}"""
+                    }
+                }
+            }
+        }
     }     
+    }   
     post {
             success { 
         sh  ("""
