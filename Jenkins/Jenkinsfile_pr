@@ -22,21 +22,21 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                script {
-                    sh "docker run ${app} mvn test"
-                }
-            }
-        }
-         stage('Copy artifact') {
-            steps {
-                dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
-                    archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
-                    sh "ls -la"
-                }
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         script {
+        //             sh "docker run ${app} mvn test"
+        //         }
+        //     }
+        // }
+        //  stage('Copy artifact') {
+        //     steps {
+        //         dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
+        //             archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
+        //             sh "ls -la"
+        //         }
+        //     }
+        // }
         // stage('Create image') {
         //     steps {
         //         script {
@@ -55,11 +55,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    withCredentials([usernamePassword(credentialsId: 'd7ec5e28-78b3-4d1e-9282-3059c265e8a2', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        sh "echo ${pass} | docker login ${dockerRegistry} -u ${user} --password-stdin"
+                    }
                    json = readFile "Jenkins/simple_app_project/calculator/services.json"
                     app = new JsonSlurperClassic().parseText(json)
-                    dockerRegistry = "moneamoneakira"
+                    dockerRegistry = ""
                     dockerOwner = "docker_course"
-                    dockerImageTag= "${dockerRegistry}/${dockerOwner}/${app}"
+                    dockerImageTag= "${dockerRegistry}/${dockerOwner}/${app}:$${env.BUILD_NUMBER}"
                     app.keySet().each { app ->
                         sh """docker pull ${dockerRegistry}/${dockerOwner}/${app}
                         docker run -d ${dockerRegistry}/${dockerOwner}/${app}"""
