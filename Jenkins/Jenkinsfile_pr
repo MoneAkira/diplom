@@ -57,10 +57,12 @@ pipeline {
                 script {
                    json = readFile "Jenkins/simple_app_project/calculator/services.json"
                     app = new JsonSlurperClassic().parseText(json)
-                    dockerImageTag= "docker.io/library/${app}"
+                    dockerRegistry = "moneamoneakira"
+                    dockerOwner = "docker_course"
+                    dockerImageTag= "${dockerRegistry}/${dockerOwner}/${app}"
                     app.keySet().each { app ->
-                        sh """docker pull docker.io/library/${app}
-                        docker run -d docker.io/library/${app}"""
+                        sh """docker pull ${dockerRegistry}/${dockerOwner}/${app}
+                        docker run -d ${dockerRegistry}/${dockerOwner}/${app}"""
                     }
             }
         }
