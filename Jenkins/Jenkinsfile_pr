@@ -29,7 +29,7 @@ pipeline {
                 }
             }
         }
-         stage('Copy artifact') {
+        stage('Copy artifact') {
             steps {
                 dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
                     archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
@@ -40,10 +40,13 @@ pipeline {
         stage('Create image') {
             steps {
                 script {
-                        dir("Jenkins/simple_app_project/calculator") {
+                        dir("app") {
                             sh """
                             mkdir target
                             docker create --name ${app} ${app}
+                            docker cp ${app}:/app/target/Calculator-1.0-SNAPSHOT.jar target/
+                            docker rm -f ${app}
+                            docker rmi -f ${app}
                             docker build -t docker.io/library/${app}:${env.BUILD_NUMBER} -f Dockerfile-jenkins-create .
                             """
                     }
