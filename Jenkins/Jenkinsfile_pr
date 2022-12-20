@@ -40,7 +40,7 @@ pipeline {
         stage('Create image') {
             steps {
                 script {
-                        dir("${value.path}") {
+                        dir("Jenkins/simple_app_project/calculator") {
                             sh """
                             mkdir target
                             docker create --name ${app} ${app}
