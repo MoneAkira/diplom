@@ -42,7 +42,6 @@ pipeline {
                 script {
                         dir("Jenkins/simple_app_project/calculator") {
                             sh """
-                            mkdir target
                             docker create --name ${app} ${app}
                             docker cp ${app}:/target/Calculator-1.0-SNAPSHOT.jar target/
                             docker rm -f ${app}
