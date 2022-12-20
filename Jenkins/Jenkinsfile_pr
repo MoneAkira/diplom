@@ -22,6 +22,14 @@ pipeline {
                 }
             }
         }
+         stage('Copy artifact') {
+            steps {
+                dir('Jenkins/simple_app_project/calculator/target') {
+                    archiveArtifacts artifacts: 'my-app-1.0-SNAPSHOT.jar', followSymlinks: false
+                    sh "ls -la"
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 script {
