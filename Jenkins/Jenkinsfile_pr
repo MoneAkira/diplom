@@ -25,9 +25,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    builder.appsForBuild.keySet().each { app ->
-                        sh "docker run ${app} mvn test"
-                    }
+                    sh "docker run ${app} mvn test"
                 }
             }
         }
