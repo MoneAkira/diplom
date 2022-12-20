@@ -29,9 +29,9 @@ pipeline {
                 }
             }
         }
-        stage('Copy artifact') {
+         stage('Copy artifact') {
             steps {
-                dir('app') {
+                dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
                     archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
                     sh "ls -la"
                 }
@@ -69,21 +69,21 @@ pipeline {
     //     }
     // }
 }        
-    post {
-            success { 
-        sh  ("""
-            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : ` OK1`' 
-        """)
-        }
-        aborted {
-        sh  ("""
-            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : `Aborted1`' 
-        """) 
-        }
-        failure {
-        sh  ("""
-            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* *Build* : `not OK1`'
-        """)    
-        }
-    }
+    // post {
+    //         success { 
+    //     sh  ("""
+    //         curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : ` OK1`' 
+    //     """)
+    //     }
+    //     aborted {
+    //     sh  ("""
+    //         curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : `Aborted1`' 
+    //     """) 
+    //     }
+    //     failure {
+    //     sh  ("""
+    //         curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* *Build* : `not OK1`'
+    //     """)    
+    //     }
+    // }
 }
