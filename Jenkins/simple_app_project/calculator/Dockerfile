@@ -5,5 +5,5 @@ RUN mvn -B -DskipTests clean package
 
 FROM openjdk:8u332-slim as main
 WORKDIR /app
-COPY --from=builder /app/target/my-app-1.0-SNAPSHOT.jar .
-CMD java -jar my-app-1.0-SNAPSHOT.jar
+COPY --from=builder /app/target/Calculator-1.0-SNAPSHOT.jar .
+CMD java -jar Calculator-1.0-SNAPSHOT.jar

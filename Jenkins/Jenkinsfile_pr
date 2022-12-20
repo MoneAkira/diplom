@@ -25,7 +25,7 @@ pipeline {
          stage('Copy artifact') {
             steps {
                 dir('Jenkins/simple_app_project/calculator/target') {
-                    archiveArtifacts artifacts: '1.0-SNAPSHOT.jar', followSymlinks: false
+                    archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
                     sh "ls -la"
                 }
             }
