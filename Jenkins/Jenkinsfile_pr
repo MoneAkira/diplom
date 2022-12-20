@@ -8,17 +8,26 @@ pipeline {
         maven '3.8.6'
     }
     stages {
+        stage ('Prepare') {
+            steps {
+                script {
+                    dir('Jenkins/simple_app_project/calculator')
+                }
+            }
+        }
         stage('Build') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn -B -DskipTests clean package"
+                    sh "docker build -t ${app} -f ${app}/Dockerfile-jenkins-build ${app}"
                 }
             }
         }
         stage('Test') {
             steps {
-            dir('Jenkins/simple_app_project/calculator') {
-                sh "mvn test"
+                script {
+                    builder.appsForBuild.keySet().each { app ->
+                        sh "docker run ${app} mvn test"
+                    }
                 }
             }
         }
@@ -27,6 +36,24 @@ pipeline {
                 dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
                     archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
                     sh "ls -la"
+                }
+            }
+        }
+        stage('Create image') {
+            steps {
+                script {
+                    builder.appsForBuild.each { app, value ->
+                        dir("${value.path}") {
+                            sh """
+                            mkdir target
+                            docker create --name ${app} ${app}
+                            docker cp ${app}:/target/Calculator-1.0-SNAPSHOT.jar target/
+                            docker rm -f ${app}
+                            docker rmi -f ${app}
+                            docker build -t ${dockerRegistry}/${dockerOwner}/${app}:${env.BUILD_NUMBER} -f Dockerfile-jenkins-create .
+                            """
+                        }
+                    }
                 }
             }
         }
