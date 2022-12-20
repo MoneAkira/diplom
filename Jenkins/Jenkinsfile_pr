@@ -18,7 +18,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "docker build -t ${app} -f ${app}/Dockerfile-jenkins-build ${app}"
+                    sh "docker build -t ${app} -f Dockerfile-jenkins-build ${app}"
                 }
             }
         }
@@ -50,7 +50,7 @@ pipeline {
                             docker cp ${app}:/target/Calculator-1.0-SNAPSHOT.jar target/
                             docker rm -f ${app}
                             docker rmi -f ${app}
-                            docker build -t ${dockerRegistry}/${dockerOwner}/${app}:${env.BUILD_NUMBER} -f ${app}/Dockerfile-jenkins-create .
+                            docker build -t ${dockerRegistry}/${dockerOwner}/${app}:${env.BUILD_NUMBER} -f Dockerfile-jenkins-create .
                             """
                         }
                     }
