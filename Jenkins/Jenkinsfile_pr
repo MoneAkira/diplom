@@ -42,10 +42,10 @@ pipeline {
                 script {
                         dir("Jenkins/simple_app_project/calculator") {
                             sh """
-                            docker create --name ${app}1 ${app}
-                            docker cp ${app}:/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target/Calculator-1.0-SNAPSHOT.jar target/
-                            docker rm -f ${app}1
-                            docker rmi -f ${app}1
+                            docker create --name ${app} ${app}
+                            docker cp ${app}:/target/Calculator-1.0-SNAPSHOT.jar target/
+                            docker rm -f ${app}
+                            docker rmi -f ${app}
                             docker build -t docker.io/library/${app}:${env.BUILD_NUMBER} -f Dockerfile-jenkins-create .
                             """
                     }
