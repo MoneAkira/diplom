@@ -42,7 +42,6 @@ pipeline {
                 script {
                         dir("app") {
                             sh """
-                            mkdir target
                             docker create --name ${app} ${app}
                             docker cp ${app}:/app/target/Calculator-1.0-SNAPSHOT.jar target/
                             docker rm -f ${app}
