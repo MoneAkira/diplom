@@ -55,7 +55,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                   json = readFile "Jenkins/simple_app_project/devops/services.json"
+                   json = readFile "Jenkins/simple_app_project/calculator/services.json"
                     app = new JsonSlurperClassic().parseText(json)
                     dockerImageTag= "docker.io/library/${app}"
                     app.keySet().each { app ->
