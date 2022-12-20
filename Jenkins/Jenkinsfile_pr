@@ -11,7 +11,7 @@ pipeline {
         stage ('Prepare') {
             steps {
                 script {
-                    dir('Jenkins/simple_app_project/calculator')
+                    app= 'calculator'
                 }
             }
         }
