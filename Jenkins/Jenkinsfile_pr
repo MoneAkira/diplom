@@ -18,7 +18,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "docker build -t ${app} -f Dockerfile-jenkins-build ${app}"
+                    sh "docker build -t ${app} -f Dockerfile-jenkins-build ."
                 }
             }
         }
