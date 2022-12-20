@@ -62,7 +62,7 @@ pipeline {
                     app = new JsonSlurperClassic().parseText(json)
                     dockerRegistry = ""
                     dockerOwner = "docker_course"
-                    dockerImageTag= "${dockerRegistry}/${dockerOwner}/${app}:$${env.BUILD_NUMBER}"
+                    dockerImageTag= "${dockerRegistry}/${dockerOwner}/${app}:${env.BUILD_NUMBER}"
                     app.keySet().each { app ->
                         sh """docker pull ${dockerRegistry}/${dockerOwner}/${app}
                         docker run -d ${dockerRegistry}/${dockerOwner}/${app}"""
