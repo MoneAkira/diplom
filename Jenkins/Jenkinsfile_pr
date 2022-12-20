@@ -40,7 +40,6 @@ pipeline {
         stage('Create image') {
             steps {
                 script {
-                    builder.appsForBuild.each { app, value ->
                         dir("${value.path}") {
                             sh """
                             mkdir target
@@ -50,7 +49,6 @@ pipeline {
                             docker rmi -f ${app}
                             docker build -t ${dockerRegistry}/${dockerOwner}/${app}:${env.BUILD_NUMBER} -f Dockerfile-jenkins-create .
                             """
-                        }
                     }
                 }
             }
