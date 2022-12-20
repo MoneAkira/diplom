@@ -46,7 +46,7 @@ pipeline {
                             docker cp ${app}:/app/target/Calculator-1.0-SNAPSHOT.jar target/
                             docker rm -f ${app}
                             docker rmi -f ${app}
-                            docker build -t ${app} -f calculator/Dockerfile-jenkins-create .
+                            docker build -t ${app} -f ${app}/Dockerfile-jenkins-create ${app}
                             """
                     }
                 }
