@@ -37,36 +37,34 @@ pipeline {
                 }
             }
         }
-        stage('Create image') {
+        // stage('Create image') {
+        //     steps {
+        //         script {
+        //                 dir("app") {
+        //                     sh """
+        //                     docker create --name ${app} ${app}
+        //                     docker cp ${app}:/app/target/Calculator-1.0-SNAPSHOT.jar target/
+        //                     docker rm -f ${app}
+        //                     docker rmi -f ${app}
+        //                     docker build -t ${app} -f Dockerfile-jenkins-create target/
+        //                     """
+        //             }
+        //         }
+        //     }
+        // }
+        stage('Deploy') {
             steps {
                 script {
-                        dir("app") {
-                            sh """
-                            docker create --name ${app} ${app}
-                            docker cp ${app}:/app/target/Calculator-1.0-SNAPSHOT.jar target/
-                            docker rm -f ${app}
-                            docker rmi -f ${app}
-                            docker build -t ${app} -f Dockerfilejenkinscreate target/
-                            """
+                   json = readFile "Jenkins/simple_app_project/devops/services.json"
+                    app = new JsonSlurperClassic().parseText(json)
+                    dockerImageTag= "docker.io/library/${app}"
+                    app.keySet().each { app ->
+                        sh """docker pull docker.io/library/${app}
+                        docker run -d docker.io/library/${app}"""
                     }
-                }
             }
         }
-    //     stage('Deploy') {
-    //         steps {
-    //             script {
-    //                json = readFile "Jenkins/simple_app_project/devops/services.json"
-    //                 app = new JsonSlurperClassic().parseText(json)
-    //                 dockerRegistry = "monea"
-    //                 dockerOwner = "mon"
-    //                 dockerImageTag= "${dockerRegistry}/${dockerOwner}/${app}"
-    //                 app.keySet().each { app ->
-    //                     sh """docker pull ${dockerRegistry}/${dockerOwner}/${app}
-    //                     docker run -d ${dockerRegistry}/${dockerOwner}/${app}"""
-    //                 }
-    //         }
-    //     }
-    // }
+    }
 }        
     // post {
     //         success { 
