@@ -15,6 +15,7 @@ RUN apt-get update && \
     stable" && \
     apt-get update && \
     apt-get -y install docker-ce
+COPY Jenkins/simple_app_project/calculator/settings.xml /var/jenkins_home/.m2/repository/settings.xml
 RUN usermod -aG docker jenkins
 RUN usermod -aG root jenkins
 USER jenkins
