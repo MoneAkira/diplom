@@ -33,7 +33,7 @@ pipeline {
         stage('Install') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn install:install"
+                    sh "mvn jar:jar install:install"
                 }
             }
         }
