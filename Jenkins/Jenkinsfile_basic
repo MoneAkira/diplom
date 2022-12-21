@@ -40,7 +40,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn apigee-enterprise:deploy"
+                    sh "mvn jar:jar deploy:deploy "
                 }
             }
         }
