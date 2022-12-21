@@ -24,7 +24,7 @@ pipeline {
         }
          stage('Copy artifact') {
             steps {
-                dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
+                dir('Jenkins/simple_app_project/calculator') {
                     archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
                     sh "ls -la"
                 }
@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
+                dir('Jenkins/simple_app_project/calculator') {
                     sh "mvn exec:java -Dexec.mainClass='com.houarizegai.calculator.Exec'"
                 }
             }
