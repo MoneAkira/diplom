@@ -1,0 +1,73 @@
+import groovy.json.JsonSlurperClassic
+
+pipeline {
+    agent {
+        label "master"
+    }
+    tools {
+        maven '3.8.6'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                dir('Jenkins/simple_app_project/calculator') {
+                    sh "mvn -B -DskipTests clean package"
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+            dir('Jenkins/simple_app_project/calculator') {
+                sh "mvn test"
+                }
+            }
+        }
+         stage('Copy artifact') {
+            steps {
+                dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
+                    archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
+                    sh "ls -la"
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                dir('/var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator/target') {
+                    sh "mvn exec:java -Dexec.mainClass='com.houarizegai.calculator.Exec'"
+                }
+            }
+        }
+    //     stage('Deploy') {
+    //         steps {
+    //             script {
+    //                json = readFile "Jenkins/simple_app_project/devops/services.json"
+    //                 app = new JsonSlurperClassic().parseText(json)
+    //                 dockerRegistry = "monea"
+    //                 dockerOwner = "mon"
+    //                 dockerImageTag= "${dockerRegistry}/${dockerOwner}/${app}"
+    //                 app.keySet().each { app ->
+    //                     sh """docker pull ${dockerRegistry}/${dockerOwner}/${app}
+    //                     docker run -d ${dockerRegistry}/${dockerOwner}/${app}"""
+    //                 }
+    //         }
+    //     }
+    // }
+}        
+    post {
+            success { 
+        sh  ("""
+            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : ` OK1`' 
+        """)
+        }
+        aborted {
+        sh  ("""
+            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : `Aborted1`' 
+        """) 
+        }
+        failure {
+        sh  ("""
+            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* *Build* : `not OK1`'
+        """)    
+        }
+    }
+}
