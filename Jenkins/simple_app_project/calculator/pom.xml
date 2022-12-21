@@ -23,9 +23,9 @@
     </dependencies>
 <distributionManagement>
        <repository>
-         <id>diplom</id>
-         <name>Diplom repo</name>
-         <url>file:///var/jenkins_home/workspace/git_pr/Jenkins/simple_app_project/calculator</url>
+         <id>github</id>
+         <name>GitHub MoneAkira Calculator</name>
+         <url>https://maven.pkg.github.com/MoneAkira/diplom</url>
        </repository>
    </distributionManagement>
 <build>
