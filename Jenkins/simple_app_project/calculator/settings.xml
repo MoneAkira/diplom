@@ -17,7 +17,7 @@
         </repository>
         <repository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/MoneAkira/diplom</url>
+          <url>https://maven.pkg.github.com/moneakira/diplom</url>
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
@@ -29,7 +29,7 @@
   <servers>
     <server>
       <id>github</id>
-      <username>MoneAkira</username>
+      <username>moneakira</username>
       <password>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</password>
     </server>
   </servers>

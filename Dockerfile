@@ -1,5 +1,6 @@
 FROM jenkins/jenkins:lts
 USER root
+COPY Jenkins/simple_app_project/calculator/settings.xml /var/jenkins_home/.m2/settings.xml
 RUN touch /var/run/docker.sock
 RUN chmod 777 /var/run/docker.sock
 RUN apt-get update && \
@@ -15,7 +16,6 @@ RUN apt-get update && \
     stable" && \
     apt-get update && \
     apt-get -y install docker-ce
-COPY Jenkins/simple_app_project/calculator/settings.xml /var/jenkins_home/.m2/repository/settings.xml
 RUN usermod -aG docker jenkins
 RUN usermod -aG root jenkins
 USER jenkins
