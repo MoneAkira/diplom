@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn run"
+                    sh "mvn exec:run"
                 }
             }
         }
