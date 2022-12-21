@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "java -cp target/Calculator-1.0-SNAPSHOT.jar com.houarizegai.calculator.App"
+                    sh "mvn run"
                 }
             }
         }
