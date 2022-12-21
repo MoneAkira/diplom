@@ -33,7 +33,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn exec:com.houarizegai.calculator.Calculator"
+                    sh """
+                    mvn compile
+                    mvn exec:java -Dexec.mainClass="com.houarizegai.Calculator"
+                    """
                 }
             }
         }
