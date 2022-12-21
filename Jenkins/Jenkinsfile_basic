@@ -15,13 +15,13 @@ pipeline {
                 }
             }
         }
-        // stage('Test') {
-        //     steps {
-        //     dir('Jenkins/simple_app_project/calculator') {
-        //         sh "mvn test"
-        //         }
-        //     }
-        // }
+        stage('Test') {
+            steps {
+            dir('Jenkins/simple_app_project/calculator') {
+                sh "mvn test"
+                }
+            }
+        }
          stage('Copy artifact') {
             steps {
                 dir('Jenkins/simple_app_project/calculator/target') {
