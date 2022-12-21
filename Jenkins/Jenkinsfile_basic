@@ -40,7 +40,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn jar:jar deploy:deploy -file -Durl=file:/var/jenkins_home/.m2/repository/com/houari/Calculator/1.0-SNAPSHOT "
+                    sh "mvn jar:jar deploy:deploy"
                 }
             }
         }
