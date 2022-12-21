@@ -33,14 +33,14 @@ pipeline {
         stage('Install') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn jar:jar install:install"
+                    sh "mvn clean jar:jar install:install"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn jar:jar deploy:deploy "
+                    sh "mvn jar:jar deploy:deploy -file -Durl=file:/var/jenkins_home/.m2/repository/com/houari/Calculator/1.0-SNAPSHOT "
                 }
             }
         }
