@@ -15,18 +15,25 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-            dir('Jenkins/simple_app_project/calculator') {
-                sh "mvn test"
-                }
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //     dir('Jenkins/simple_app_project/calculator') {
+        //         sh "mvn test"
+        //         }
+        //     }
+        // }
          stage('Copy artifact') {
             steps {
                 dir('Jenkins/simple_app_project/calculator/target') {
                     archiveArtifacts artifacts: 'Calculator-1.0-SNAPSHOT.jar', followSymlinks: false
                     sh "ls -la"
+                }
+            }
+        }
+        stage('Install') {
+            steps {
+                dir('Jenkins/simple_app_project/calculator') {
+                    sh "mvn install:install"
                 }
             }
         }
