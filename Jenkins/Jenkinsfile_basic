@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 dir('Jenkins/simple_app_project/calculator') {
-                    sh "mvn exec:java -Dexec.mainClass='com.houarizegai.calculator.Exec'"
+                    sh "java -cp target/Calculator-1.0-SNAPSHOT.jar com.houarizegai.calculator.App"
                 }
             }
         }
@@ -53,21 +53,21 @@ pipeline {
     //     }
     // }
 }        
-    post {
-            success { 
-        sh  ("""
-            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : ` OK1`' 
-        """)
-        }
-        aborted {
-        sh  ("""
-            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : `Aborted1`' 
-        """) 
-        }
-        failure {
-        sh  ("""
-            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* *Build* : `not OK1`'
-        """)    
-        }
-    }
+    // post {
+    //         success { 
+    //     sh  ("""
+    //         curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : ` OK1`' 
+    //     """)
+    //     }
+    //     aborted {
+    //     sh  ("""
+    //         curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}*  *Build* : `Aborted1`' 
+    //     """) 
+    //     }
+    //     failure {
+    //     sh  ("""
+    //         curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* *Build* : `not OK1`'
+    //     """)    
+    //     }
+    // }
 }
