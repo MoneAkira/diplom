@@ -1,11 +1,8 @@
 import groovy.json.JsonSlurperClassic
 
 pipeline {
-    parameters {
-        choice choices: ['master', 'agent'], description: 'Select agent', name: 'agent'
-    }
     agent {
-        label "${agent}"
+        label "master"
     }
     tools {
         maven '3.8.6'
